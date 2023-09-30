@@ -80,18 +80,22 @@ class Client {
     }
 
     async sendMessage(channelId, content) {
-      try {
-        await axios.post(`https://discord.com/api/v10/channels/${channelId}/messages`, {
-            content: content
-        }, {
-            headers: { "Authorization": `Bot ${this.token}` }
-        });
-        console.log("Message sent successfully!");
-      } catch (error) {
-        console.log("Error sending message:", error);
-      }
-    }
+        try {
+            let payload;
 
+            if (typeof content === "string") {
+                payload = { content: content };
+            } else {
+                payload = { embeds: content };
+            }
+
+            await axios.post(`https://discord.com/api/v10/channels/${channelId}/messages`, payload, {
+                headers: { "Authorization": `Bot ${this.token}` }
+            });
+        } catch (error) {
+            console.log("Error sending message:", error);
+        }
+    }
 
     login(token) {
         this.token = token;

@@ -20,3 +20,29 @@ client.on("messageCreate", async (msg) => {
 
 client.login(process.env.token);
 ```
+
+Embeds? No problem, no nonsense!
+
+```js
+const client = new Client({ token: process.env.token, intents: 33281 });
+
+client.on("messageCreate", async (msg) => {
+    if (msg.content === "ping") {
+        const embedData = {
+            title: "ABC",
+            description: "Sample Description",
+            color: 16711680,
+            footer: {
+                text: "Sample Footer"
+            }
+        };
+
+        client.sendMessage(msg.channel_id, [embedData]);
+    }
+});
+
+
+client.login(process.env.token);
+```
+
+Check out the wiki for an in depth explanation of these features.
