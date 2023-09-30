@@ -21,10 +21,16 @@ class Client {
                 this.startHeartbeat(event.d.heartbeat_interval);
                 this.identify();
                 break;
+            case 11: // Heartbeat ACK
+                // TODO: handle heartbeat acknowledgment here if needed
+                break;
             case 0: // Dispatch event
                 if (event.t === "MESSAGE_CREATE" && this.eventHandlers["messageCreate"]) {
                     this.eventHandlers["messageCreate"](event.d);
                 }
+                break;
+            default:
+                // TODO: Handle other event codes if necessary
                 break;
         }
     }
