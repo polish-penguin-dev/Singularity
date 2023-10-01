@@ -170,7 +170,6 @@ class Client {
                     headers: { 'Authorization': `Bot ${this.token}` }
                 }
             );
-            console.log(`Reacted to message ${messageId} in channel ${channelId} with ${emoji}!`);
         } catch (error) {
             console.error(`Error reacting to message ${messageId} in channel ${channelId} with ${emoji}:`, error);
         }
