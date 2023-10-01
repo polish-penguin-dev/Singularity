@@ -12,7 +12,7 @@ Ping/Pong!
 const Client = require("Singularity");
 const client = new Client({ token: process.env.token, intents: 33281 });
 
-client.on("messageCreate", async (msg) => {
+client.on("MESSAGE_CREATE", async (msg) => {
     if (msg.content === "ping") {
       client.send(msg.channel_id, "pong!");
     }
@@ -26,7 +26,7 @@ Embeds? We got you covered!
 ```js
 const client = new Client({ token: process.env.token, intents: 33281 });
 
-client.on("messageCreate", async (msg) => {
+client.on("MESSAGE_CREATE", async (msg) => {
     if (msg.content === "ping") {
         client.send(msg.channel_id, [
           {

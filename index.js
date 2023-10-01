@@ -27,8 +27,8 @@ class Client {
                 // TODO: handle heartbeat acknowledgment here if needed
                 break;
             case 0: // Dispatch event
-                if (event.t === "MESSAGE_CREATE" && this.eventHandlers["messageCreate"]) {
-                    this.eventHandlers["messageCreate"](event.d);
+                if (this.eventHandlers[event.t]) {
+                  this.eventHandlers[event.t](event.d);
                 }
                 break;
             default:
