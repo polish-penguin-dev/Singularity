@@ -9,10 +9,12 @@ class Client {
         this.heartbeatInterval = null;
     }
 
+    //Code to handle events, gateway & API
+
     on(event, handler) {
         this.eventHandlers[event] = handler;
     }
-
+  
     handleEvent(data) {
         const event = JSON.parse(data);
 
@@ -56,6 +58,10 @@ class Client {
                     "$os": "linux",
                     "$browser": "my_discord_bot",
                     "$device": "my_discord_bot"
+                },
+                presence: {
+                  status: "online",
+                  afk: false
                 }
             }
         }));
@@ -79,7 +85,31 @@ class Client {
         return response.data.url;
     }
 
-    async sendMessage(channelId, content) {
+    login() {
+        if (!this.token) {
+            throw new Error("Token not provided");
+        }
+      
+        this.connect();
+    }
+
+    //Code for interacting with & using bots
+  
+    status(newStatus) {
+        if (!["online", "dnd", "idle", "invisible"].includes(newStatus)) {
+            throw new Error("Invalid status provided.");
+        }
+
+        this.ws.send(JSON.stringify({
+            op: 3,
+            d: {
+              status: newStatus,
+              afk: false
+            }
+        }));
+    }
+  
+    async send(channelId, content) {
         try {
             let payload;
 
@@ -97,8 +127,30 @@ class Client {
         }
     }
 
-    login(token) {
-        this.token = token;
-        this.connect();
+    async delete(channelId, messageId) {
+        try {
+            await axios.delete(`https://discord.com/api/v10/channels/${channelId}/messages/${messageId}`, {
+                headers: { 'Authorization': `Bot ${this.token}` }
+            });
+        } catch (error) {
+            console.error(`Error deleting message ${messageId} from channel ${channelId}:`, error);
+        }
+    }
+
+    async react(channelId, messageId, emoji) {
+        try {
+            const encodedEmoji = encodeURIComponent(emoji);
+            
+            await axios.put(
+                `https://discord.com/api/v10/channels/${channelId}/messages/${messageId}/reactions/${encodedEmoji}/@me`,
+                {}, 
+                {
+                    headers: { 'Authorization': `Bot ${this.token}` }
+                }
+            );
+            console.log(`Reacted to message ${messageId} in channel ${channelId} with ${emoji}!`);
+        } catch (error) {
+            console.error(`Error reacting to message ${messageId} in channel ${channelId} with ${emoji}:`, error);
+        }
     }
 }
