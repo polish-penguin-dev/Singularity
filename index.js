@@ -149,29 +149,29 @@ class Client {
         }
     }
 
-    async delete(channelId, messageId) {
+    async delete(message) {
         try {
-            await axios.delete(`https://discord.com/api/v10/channels/${channelId}/messages/${messageId}`, {
+            await axios.delete(`https://discord.com/api/v10/channels/${message.channel_id}/messages/${message.id}`, {
                 headers: { 'Authorization': `Bot ${this.token}` }
             });
         } catch (error) {
-            console.error(`Error deleting message ${messageId} from channel ${channelId}:`, error);
+            console.error(`Error deleting message ${message.id} from channel ${message.channel_id}:`, error);
         }
     }
 
-    async react(channelId, messageId, emoji) {
+    async react(message, emoji) {
         try {
             const encodedEmoji = encodeURIComponent(emoji);
             
             await axios.put(
-                `https://discord.com/api/v10/channels/${channelId}/messages/${messageId}/reactions/${encodedEmoji}/@me`,
+                `https://discord.com/api/v10/channels/${message.channel_id}/messages/${message.id}/reactions/${encodedEmoji}/@me`,
                 {}, 
                 {
                     headers: { 'Authorization': `Bot ${this.token}` }
                 }
             );
         } catch (error) {
-            console.error(`Error reacting to message ${messageId} in channel ${channelId} with ${emoji}:`, error);
+            console.error(`Error reacting to message ${message.id} in channel ${message.channel_id} with ${emoji}:`, error);
         }
     }
 }
