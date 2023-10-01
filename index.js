@@ -127,6 +127,28 @@ class Client {
         }
     }
 
+    async reply(message, content) {
+        try {
+          let payload;
+
+          if (typeof content === "string") {
+              payload = { content: content };
+          } else {
+              payload = { embed: content };
+          }
+
+          payload.message_reference = {
+              message_id: message.id
+          };
+
+          await axios.post(`https://discord.com/api/v10/channels/${message.channel_id}/messages`, payload, {
+              headers: { "Authorization": `Bot ${this.token}` }
+          });
+        } catch(error) {
+          console.log("Error replying to message:", error);
+        }
+    }
+
     async delete(channelId, messageId) {
         try {
             await axios.delete(`https://discord.com/api/v10/channels/${channelId}/messages/${messageId}`, {
