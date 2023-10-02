@@ -1,7 +1,7 @@
 # Singularity
 
-<a href="https://www.npmjs.com/package/noscord"><img src="https://img.shields.io/npm/v/noscord?style=flat&color=red&logo=npm&logoColor=white" alt="version" /></a>
-<a href="https://www.npmjs.com/package/noscord"><img src="https://img.shields.io/npm/dt/noscord?style=flat&logo=docusign&logoColor=white" alt="downloads" /></a>
+<a href="https://www.npmjs.com/package/singularity-discord"><img src="https://img.shields.io/npm/v/singularity-discord?style=flat&color=red&logo=npm&logoColor=white" alt="version" /></a>
+<a href="https://www.npmjs.com/package/singularity-discord"><img src="https://img.shields.io/npm/dt/singularity-discord?style=flat&logo=docusign&logoColor=white" alt="downloads" /></a>
 <a href="https://github.com/polish-penguin-dev/Singularity/wiki"><img src="https://img.shields.io/badge/docs-noscord?color=purple&logo=gitbook&logoColor=white" alt="docs" /></a>
 <img src="https://github.com/polish-penguin-dev/Singularity/actions/workflows/publish.yml/badge.svg" alt="publish">
 
