@@ -216,16 +216,4 @@ class FetchNamespace {
     }
 }
 
-const client = new Client({ token: process.env.token, intents: 33281 });
-
-client.on("MESSAGE_CREATE", async (msg) => {
-    if (msg.content.startsWith("!purge")) {
-        const amount = msg.content.slice(7);
-        if(!amount) client.messages.reply(msg, ":x: You must specify an amount!");
-
-        const messages = await client.fetch.messages(msg.channel_id, amount);
-        client.messages.purge(msg.channel_id, messages);
-    }
-});
-
-client.login();
+module.exports = { Client };
