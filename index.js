@@ -7,9 +7,11 @@ class Client {
         this.intents = options.intents;
         this.eventHandlers = {};
         this.heartbeatInterval = null;
-    }
 
-    //Code to handle events, gateway & API
+        // Initialize namespaces
+        this.fetch = new FetchNamespace(this);
+        this.messages = new MessageNamespace(this);
+    }
 
     on(event, handler) {
         this.eventHandlers[event] = handler;
@@ -93,8 +95,6 @@ class Client {
         this.connect();
     }
 
-    //Code for interacting with & using bots
-  
     status(newStatus) {
         if (!["online", "dnd", "idle", "invisible"].includes(newStatus)) {
             throw new Error("Invalid status provided.");
@@ -108,7 +108,13 @@ class Client {
             }
         }));
     }
-  
+}
+
+class MessageNamespace {
+    constructor(client) {
+        this.client = client; 
+    }
+
     async send(channelId, content) {
         try {
             let payload;
@@ -120,14 +126,14 @@ class Client {
             }
 
             await axios.post(`https://discord.com/api/v10/channels/${channelId}/messages`, payload, {
-                headers: { "Authorization": `Bot ${this.token}` }
+                headers: { "Authorization": `Bot ${this.client.token}` }
             });
         } catch (error) {
             console.log("Error sending message:", error);
         }
     }
 
-    async reply(message, content) {
+     async reply(message, content) {
         try {
           let payload;
 
@@ -142,7 +148,7 @@ class Client {
           };
 
           await axios.post(`https://discord.com/api/v10/channels/${message.channel_id}/messages`, payload, {
-              headers: { "Authorization": `Bot ${this.token}` }
+              headers: { "Authorization": `Bot ${this.client.token}` }
           });
         } catch(error) {
           console.log("Error replying to message:", error);
@@ -152,12 +158,28 @@ class Client {
     async delete(message) {
         try {
             await axios.delete(`https://discord.com/api/v10/channels/${message.channel_id}/messages/${message.id}`, {
-                headers: { 'Authorization': `Bot ${this.token}` }
+                headers: { "Authorization": `Bot ${this.client.token}` }
             });
         } catch (error) {
             console.error(`Error deleting message ${message.id} from channel ${message.channel_id}:`, error);
         }
     }
+
+    //Cannot delete messages older than 14 days!
+    async purge(channelId, messages) {
+        try {
+            const messageIds = messages.map(msg => msg.id);
+
+            await axios.post(`https://discord.com/api/v10/channels/${channelId}/messages/bulk-delete`, {
+                messages: messageIds
+            }, {
+                headers: { "Authorization": `Bot ${this.client.token}` }
+            });
+        } catch(error) {
+            console.log(`Error purging (BulkDelete) messages in channel ${channelId}:`, error);
+        }
+    }
+
 
     async react(message, emoji) {
         try {
@@ -167,7 +189,7 @@ class Client {
                 `https://discord.com/api/v10/channels/${message.channel_id}/messages/${message.id}/reactions/${encodedEmoji}/@me`,
                 {}, 
                 {
-                    headers: { 'Authorization': `Bot ${this.token}` }
+                    headers: { "Authorization": `Bot ${this.client.token}` }
                 }
             );
         } catch (error) {
@@ -175,3 +197,35 @@ class Client {
         }
     }
 }
+
+class FetchNamespace {
+    constructor(client) {
+        this.client = client; 
+    }
+
+    async messages(channelId, limit = 50) {
+        try {
+            const response = await axios.get(`https://discord.com/api/v10/channels/${channelId}/messages?limit=${limit}`, {
+                headers: { "Authorization": `Bot ${this.client.token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Error fetching messages from channel ${channelId}:`, error);
+            return [];
+        }
+    }
+}
+
+const client = new Client({ token: process.env.token, intents: 33281 });
+
+client.on("MESSAGE_CREATE", async (msg) => {
+    if (msg.content.startsWith("!purge")) {
+        const amount = msg.content.slice(7);
+        if(!amount) client.messages.reply(msg, ":x: You must specify an amount!");
+
+        const messages = await client.fetch.messages(msg.channel_id, amount);
+        client.messages.purge(msg.channel_id, messages);
+    }
+});
+
+client.login();
