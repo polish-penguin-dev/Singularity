@@ -1,18 +1,31 @@
 {
-  "name": "nodejs",
+  "name": "singularity-discord",
   "version": "1.0.0",
-  "description": "",
+  "description": "The simplest, cleanest Discord API wrapper written in node.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "discord",
+    "discord.js",
+    "api"
+  ],
+  "author": "Alex Wegrzyn",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^18.0.6",
     "axios": "^1.5.1",
     "node-fetch": "^3.2.6",
     "ws": "^8.14.2"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polish-penguin-dev/Singularity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/polish-penguin-dev/Singularity/issues"
+  },
+  "homepage": "https://github.com/polish-penguin-dev/Singularity#readme"
 }
