@@ -1,6 +1,7 @@
 const { EventEmitter } = require("events");
 const WebSocket = require("ws");
 const axios = require("axios");
+const ApplicationCommands = require("./interactions/applicationCommands");
 
 // Import NameSpaces
 const MessageNamespace = require("./Namespaces/MessageNamespace");
@@ -16,15 +17,23 @@ class Client extends EventEmitter {
         this.token = options.token;
         this.intents = options.intents;
         this.heartbeatInterval = null;
+        this.apiBase = 'https://discord.com/api/v10/';
+        this.user = null;
 
         // Initialize namespaces
         this.fetch = new FetchNamespace(this);
         this.messages = new MessageNamespace(this);
-        this.users = new UserNamespace(this);
+        this.commands = new ApplicationCommands(this);
     }
   
     handleEvent(data) {
         const event = JSON.parse(data);
+
+        if (event.t === 'READY') {
+            this.user = event.d.user;
+        }
+
+        console.log(event.t);
 
         switch(event.op) {
             case 10: // Hello event
@@ -35,7 +44,13 @@ class Client extends EventEmitter {
                 this.emit("heartbeat", event.d);
                 break;
             case 0: // Dispatch event
-                this.emit(event.t, event.d);
+                try {
+                    const eventFunc = require(`./events/${event.t}`);
+                    eventFunc(this, event.d);
+                } catch(e) {
+                    this.emit(event.t, event.d);
+                }
+                
                 break;
             default:
                 // Emit raw event data if needed
@@ -78,7 +93,7 @@ class Client extends EventEmitter {
         const gatewayUrl = await this.getGatewayUrl();
         this.ws = new WebSocket(gatewayUrl);
         
-        this.ws.on("open", () => {
+        this.ws.on("open", (data) => {
             console.log("Connected to gateway.");
         });
         
