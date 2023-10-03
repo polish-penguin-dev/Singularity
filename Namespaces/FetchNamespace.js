@@ -64,6 +64,31 @@ class FetchNamespace {
             return null;
         }
     }
+
+    async member(guildId, userId) {
+        try {
+            const response = await axios.get(`https://discord.com/api/v10/guilds/${guildId}/members/${userId}`, {
+                headers: { "Authorization": `Bot ${this.client.token}` } 
+            });
+            return response.data;
+        } catch(error) {
+            console.error(`Error fetching details for member ${userId}:`, error);
+            return null;
+        } 
+    }
+
+    async role(guildId, roleId) {
+        try {
+            const response = await axios.get(`https://discord.com/api/v10/guilds/${guildId}/roles`, {
+                headers: { "Authorization": `Bot ${this.client.token}` }
+            });
+            const roles = response.data;
+            return roles.find(role => role.id === roleId);
+        } catch(error) {
+            console.error(`Error fetching role ${roleId} in guild ${guildId}:`, error);
+            return null;
+        }
+    }
 }
 
 module.exports = FetchNamespace;

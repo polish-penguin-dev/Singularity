@@ -1,8 +1,11 @@
 const axios = require("axios");
+const FetchNamespace = require("./FetchNamespace");
 
 class UserNamespace {
     constructor(client) {
         this.client = client;
+
+        this.fetch = new FetchNamespace(this.client);
     }
 
     async kick(guildId, userId, reason = "") {
@@ -75,6 +78,24 @@ class UserNamespace {
             });
         } catch (error) {
             console.error(`Error unbanning user ${userId} from guild ${guildId}:`, error);
+        }
+    }
+
+    //Only checks at guild-level!
+    async hasPermission(guildId, userId, permission) {
+        try {
+            const member = await this.fetch.member(guildId, userId);
+          
+            for (let roleId of member.roles) {
+                const role = await this.fetch.role(guildId, roleId);
+                if (role.permissions.includes(permission)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (error) {
+            console.error(`Error checking permission for user ${userId} in guild ${guildId}:`, error);
+            return false;
         }
     }
 }
