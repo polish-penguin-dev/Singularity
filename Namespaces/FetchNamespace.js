@@ -1,0 +1,65 @@
+class FetchNamespace {
+    constructor(client) {
+        this.client = client; 
+    }
+
+    async messages(channelId, limit = 50) {
+        try {
+            const response = await axios.get(`https://discord.com/api/v10/channels/${channelId}/messages?limit=${limit}`, {
+                headers: { "Authorization": `Bot ${this.client.token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Error fetching messages from channel ${channelId}:`, error);
+            return [];
+        }
+    }
+
+    async message(channelId, messageId) {
+        try {
+            const response = await axios.get(`https://discord.com/api/v10/channels/${channelId}/messages/${messageId}`, {
+                headers: { "Authorization": `Bot ${this.client.token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Error fetching message ${messageId} from channel ${channelId}:`, error);
+            return null;
+        }
+    }
+
+    async channel(channelId) {
+        try {
+            const response = await axios.get(`https://discord.com/api/v10/channels/${channelId}`, {
+                headers: { "Authorization": `Bot ${this.client.token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Error fetching details for channel ${channelId}:`, error);
+            return null;
+        }
+    }
+
+    async guild(guildId) {
+        try {
+            const response = await axios.get(`https://discord.com/api/v10/guilds/${guildId}`, {
+                headers: { "Authorization": `Bot ${this.client.token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Error fetching details for guild ${guildId}:`, error);
+            return null;
+        }
+    }
+
+    async user(userId) {
+        try {
+            const response = await axios.get(`https://discord.com/api/v10/users/${userId}`, {
+                headers: { "Authorization": `Bot ${this.client.token}` }
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Error fetching details for user ${userId}:`, error);
+            return null;
+        }
+    }
+}
