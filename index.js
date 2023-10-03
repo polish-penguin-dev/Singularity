@@ -1,27 +1,24 @@
+const { EventEmitter } = require("events");
 const WebSocket = require("ws");
 const axios = require("axios");
 
-//Import NameSpaces
+// Import NameSpaces
 const MessageNamespace = require("./Namespaces/MessageNamespace");
 const FetchNamespace = require("./Namespaces/FetchNamespace");
 
-//Import Lists
+// Import Lists
 const Colors = require("./Lists/Colors.js");
 
-class Client {
+class Client extends EventEmitter {
     constructor(options) {
+        super();
         this.token = options.token;
         this.intents = options.intents;
-        this.eventHandlers = {};
         this.heartbeatInterval = null;
 
         // Initialize namespaces
         this.fetch = new FetchNamespace(this);
         this.messages = new MessageNamespace(this);
-    }
-
-    on(event, handler) {
-        this.eventHandlers[event] = handler;
     }
   
     handleEvent(data) {
@@ -33,15 +30,14 @@ class Client {
                 this.identify();
                 break;
             case 11: // Heartbeat ACK
-                // TODO: handle heartbeat acknowledgment here if needed
+                this.emit("heartbeat", event.d);
                 break;
             case 0: // Dispatch event
-                if (this.eventHandlers[event.t]) {
-                  this.eventHandlers[event.t](event.d);
-                }
+                this.emit(event.t, event.d);
                 break;
             default:
-                // TODO: Handle other event codes if necessary
+                // Emit raw event data if needed
+                this.emit("raw", event);
                 break;
         }
     }
