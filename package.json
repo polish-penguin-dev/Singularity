@@ -1,6 +1,6 @@
 {
   "name": "singularity-discord",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The simplest, cleanest Discord API wrapper written in node.",
   "main": "index.js",
   "scripts": {
