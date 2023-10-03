@@ -5,6 +5,7 @@ const axios = require("axios");
 // Import NameSpaces
 const MessageNamespace = require("./Namespaces/MessageNamespace");
 const FetchNamespace = require("./Namespaces/FetchNamespace");
+const UserNamespace = require("./Namespaces/UserNamespace");
 
 // Import Lists
 const Colors = require("./Lists/Colors.js");
@@ -19,6 +20,7 @@ class Client extends EventEmitter {
         // Initialize namespaces
         this.fetch = new FetchNamespace(this);
         this.messages = new MessageNamespace(this);
+        this.users = new UserNamespace(this);
     }
   
     handleEvent(data) {
