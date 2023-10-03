@@ -5,6 +5,9 @@ const axios = require("axios");
 const MessageNamespace = require("./Namespaces/MessageNamespace");
 const FetchNamespace = require("./Namespaces/FetchNamespace");
 
+//Import Lists
+const Colors = require("./Lists/Colors.js");
+
 class Client {
     constructor(options) {
         this.token = options.token;
@@ -114,4 +117,4 @@ class Client {
     }
 }
 
-module.exports = { Client };
+module.exports = { Client, Colors };

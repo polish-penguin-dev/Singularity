@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 class MessageNamespace {
     constructor(client) {
         this.client = client; 
@@ -85,3 +87,5 @@ class MessageNamespace {
         }
     }
 }
+
+module.exports = MessageNamespace;

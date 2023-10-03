@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 class FetchNamespace {
     constructor(client) {
         this.client = client; 
@@ -63,3 +65,5 @@ class FetchNamespace {
         }
     }
 }
+
+module.exports = FetchNamespace;
