@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require("axios");
 
 class AnyInteraction {
     constructor(client, data) {
@@ -32,7 +32,7 @@ class AnyInteraction {
     }
 
     async reply(data) {
-        if (typeof data === 'string') {
+        if (typeof data === "string") {
             data = {
                 content: data
             }
@@ -47,7 +47,7 @@ class AnyInteraction {
 
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         )
@@ -60,7 +60,7 @@ class AnyInteraction {
 
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         )
@@ -71,7 +71,7 @@ class AnyInteraction {
             `${this.client.apiBase}/webhooks/${this.client.user.id}/${this.token}/messages/@original`,
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         );
@@ -86,7 +86,7 @@ class AnyInteraction {
 
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         );

@@ -1,5 +1,5 @@
-const events = require('../utils/events');
-const CommandInteraction = require('../structures/CommandInteraction');
+const events = require("../Lists/Events");
+const CommandInteraction = require("../Structures/CommandInteraction");
 
 module.exports = (client, packet) => {
     // TODO: Handle all interaction types

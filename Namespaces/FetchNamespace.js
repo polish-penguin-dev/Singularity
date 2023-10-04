@@ -7,7 +7,7 @@ class FetchNamespace {
 
     async messages(channelId, limit = 50) {
         try {
-            const response = await axios.get(`https://discord.com/api/v10/channels/${channelId}/messages?limit=${limit}`, {
+            const response = await axios.get(`${this.client.apiBase}/channels/${channelId}/messages?limit=${limit}`, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
             });
             return response.data;
@@ -19,7 +19,7 @@ class FetchNamespace {
 
     async message(channelId, messageId) {
         try {
-            const response = await axios.get(`https://discord.com/api/v10/channels/${channelId}/messages/${messageId}`, {
+            const response = await axios.get(`${this.client.apiBase}/channels/${channelId}/messages/${messageId}`, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
             });
             return response.data;
@@ -31,7 +31,7 @@ class FetchNamespace {
 
     async channel(channelId) {
         try {
-            const response = await axios.get(`https://discord.com/api/v10/channels/${channelId}`, {
+            const response = await axios.get(`${this.client.apiBase}/channels/${channelId}`, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
             });
             return response.data;
@@ -43,7 +43,7 @@ class FetchNamespace {
 
     async guild(guildId) {
         try {
-            const response = await axios.get(`https://discord.com/api/v10/guilds/${guildId}`, {
+            const response = await axios.get(`${this.client.apiBase}/guilds/${guildId}`, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
             });
             return response.data;
@@ -55,7 +55,7 @@ class FetchNamespace {
 
     async user(userId) {
         try {
-            const response = await axios.get(`https://discord.com/api/v10/users/${userId}`, {
+            const response = await axios.get(`${this.client.apiBase}/users/${userId}`, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
             });
             return response.data;
@@ -67,7 +67,7 @@ class FetchNamespace {
 
     async member(guildId, userId) {
         try {
-            const response = await axios.get(`https://discord.com/api/v10/guilds/${guildId}/members/${userId}`, {
+            const response = await axios.get(`${this.client.apiBase}/guilds/${guildId}/members/${userId}`, {
                 headers: { "Authorization": `Bot ${this.client.token}` } 
             });
             return response.data;
@@ -79,7 +79,7 @@ class FetchNamespace {
 
     async role(guildId, roleId) {
         try {
-            const response = await axios.get(`https://discord.com/api/v10/guilds/${guildId}/roles`, {
+            const response = await axios.get(`${this.client.apiBase}/guilds/${guildId}/roles`, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
             });
             const roles = response.data;

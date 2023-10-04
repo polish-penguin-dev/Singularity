@@ -10,7 +10,7 @@ class ApplicationCommands {
             `${this.client.apiBase}/applications/${this.client.user.id}/guilds/${guildId}/commands`,
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         );
@@ -23,7 +23,7 @@ class ApplicationCommands {
             `${this.client.apiBase}/applications/${this.client.user.id}/commands`,
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         )
@@ -38,7 +38,7 @@ class ApplicationCommands {
 
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         );
@@ -49,7 +49,7 @@ class ApplicationCommands {
         options,
         {
             headers: {
-                'Authorization': `Bot ${this.client.token}`
+                "Authorization": `Bot ${this.client.token}`
             }
         });
     }
@@ -59,25 +59,25 @@ class ApplicationCommands {
         options,
         {
             headers: {
-                'Authorization': `Bot ${this.client.token}`
+                "Authorization": `Bot ${this.client.token}`
             }
         });
     }
 
     async deleteGuildCommand(guildId, commandId) {
         if (!guildId) {
-            throw new Error('Requires guild ID')
+            throw new Error("Requires guild ID");
         }
 
         if (!commandId) {
-            throw new Error('Requires command ID')
+            throw new Error("Requires command ID");
         }
         
         await axios.delete(
             `${this.client.apiBase}/applications/${this.client.user.id}/guilds/${guildId}/commands/${commandId}`,
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         )
@@ -85,14 +85,14 @@ class ApplicationCommands {
 
     async deleteCommand(commandId) {
         if (!commandId) {
-            throw new Error('Requires command ID')
+            throw new Error("Requires command ID");
         }
 
         await axios.delete(
             `${this.client.apiBase}/applications/${this.client.user.id}/commands/${commandId}`,
             {
                 headers: {
-                    'Authorization': `Bot ${this.client.token}`
+                    "Authorization": `Bot ${this.client.token}`
                 }
             }
         )

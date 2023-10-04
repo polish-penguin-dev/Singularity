@@ -1,6 +1,6 @@
-const axios = require('axios');
+const axios = require("axios");
 
-const AnyInteraction = require('./AnyInteraction');
+const AnyInteraction = require("./AnyInteraction");
 
 class CommandInteraction extends AnyInteraction {
     constructor(client, data) {

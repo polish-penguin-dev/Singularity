@@ -1,15 +1,16 @@
 const { EventEmitter } = require("events");
 const WebSocket = require("ws");
 const axios = require("axios");
-const ApplicationCommands = require("./interactions/applicationCommands");
 
 // Import NameSpaces
+const ApplicationCommandsNamespace = require("./Namespaces/ApplicationCommandsNamespace");
 const MessageNamespace = require("./Namespaces/MessageNamespace");
 const FetchNamespace = require("./Namespaces/FetchNamespace");
 const UserNamespace = require("./Namespaces/UserNamespace");
 
 // Import Lists
-const Colors = require("./Lists/Colors.js");
+const Colors = require("./Lists/Colors");
+const Events = require("./Lists/Events");
 
 class Client extends EventEmitter {
     constructor(options) {
@@ -17,19 +18,19 @@ class Client extends EventEmitter {
         this.token = options.token;
         this.intents = options.intents;
         this.heartbeatInterval = null;
-        this.apiBase = 'https://discord.com/api/v10/';
+        this.apiBase = "https://discord.com/api/v10";
         this.user = null;
 
         // Initialize namespaces
         this.fetch = new FetchNamespace(this);
         this.messages = new MessageNamespace(this);
-        this.commands = new ApplicationCommands(this);
+        this.commands = new ApplicationCommandsNamespace(this);
     }
   
     handleEvent(data) {
         const event = JSON.parse(data);
 
-        if (event.t === 'READY') {
+        if (event.t === "READY") {
             this.user = event.d.user;
         }
 
@@ -131,3 +132,30 @@ class Client extends EventEmitter {
 }
 
 module.exports = { Client, Colors };
+
+/*
+const client = new Client({ token: process.env.token, intents: 529 });
+
+client.on("READY", async () => {
+    console.log("Bot is ready");
+
+    await client.commands.createGuildCommands("1151167185029431448", [
+        {
+            name: "ping",
+            description: "Test if the bot is responsive"
+        },
+        {
+            name: "ping2",
+            description: "Test if the bot is responsive"
+        }
+    ])
+
+    const commands = await client.commands.getCommands();
+})
+
+client.on("INTERACTION_CREATE", async (interaction) => {
+    await interaction.reply({ content: "hi" });
+})
+
+client.login();
+*/

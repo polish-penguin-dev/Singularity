@@ -15,7 +15,7 @@ class MessageNamespace {
                 payload = { embeds: content };
             }
 
-            await axios.post(`https://discord.com/api/v10/channels/${channelId}/messages`, payload, {
+            await axios.post(`${this.client.apiBase}/channels/${channelId}/messages`, payload, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
             });
         } catch (error) {
@@ -37,7 +37,7 @@ class MessageNamespace {
               message_id: message.id
           };
 
-          await axios.post(`https://discord.com/api/v10/channels/${message.channel_id}/messages`, payload, {
+          await axios.post(`${this.client.apiBase}/channels/${message.channel_id}/messages`, payload, {
               headers: { "Authorization": `Bot ${this.client.token}` }
           });
         } catch(error) {
@@ -47,7 +47,7 @@ class MessageNamespace {
 
     async delete(message) {
         try {
-            await axios.delete(`https://discord.com/api/v10/channels/${message.channel_id}/messages/${message.id}`, {
+            await axios.delete(`${this.client.apiBase}/channels/${message.channel_id}/messages/${message.id}`, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
             });
         } catch (error) {
@@ -60,7 +60,7 @@ class MessageNamespace {
         try {
             const messageIds = messages.map(msg => msg.id);
 
-            await axios.post(`https://discord.com/api/v10/channels/${channelId}/messages/bulk-delete`, {
+            await axios.post(`${this.client.apiBase}/channels/${channelId}/messages/bulk-delete`, {
                 messages: messageIds
             }, {
                 headers: { "Authorization": `Bot ${this.client.token}` }
@@ -76,7 +76,7 @@ class MessageNamespace {
             const encodedEmoji = encodeURIComponent(emoji);
             
             await axios.put(
-                `https://discord.com/api/v10/channels/${message.channel_id}/messages/${message.id}/reactions/${encodedEmoji}/@me`,
+                `${this.client.apiBase}/channels/${message.channel_id}/messages/${message.id}/reactions/${encodedEmoji}/@me`,
                 {}, 
                 {
                     headers: { "Authorization": `Bot ${this.client.token}` }
