@@ -18,9 +18,9 @@ const Client = require("singularity-discord");
 const client = new Client({ token: process.env.token, intents: 33281 });
 
 client.on("MESSAGE_CREATE", async (msg) => {
-    if (msg.content === "ping") {
-        client.messages.send(msg.channel_id, "pong!");
-    }
+  if (msg.content === "ping") {
+    client.messages.send(msg.channel_id, "pong!");
+  }
 });
 
 client.login();
