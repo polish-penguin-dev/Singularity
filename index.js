@@ -7,6 +7,7 @@ const ApplicationCommandsNamespace = require("./Namespaces/ApplicationCommandsNa
 const MessageNamespace = require("./Namespaces/MessageNamespace");
 const FetchNamespace = require("./Namespaces/FetchNamespace");
 const UserNamespace = require("./Namespaces/UserNamespace");
+const VoiceNamespace = require("./Namespaces/VoiceNamespace");
 
 // Import Lists
 const Colors = require("./Lists/Colors");
@@ -25,6 +26,8 @@ class Client extends EventEmitter {
         this.fetch = new FetchNamespace(this);
         this.messages = new MessageNamespace(this);
         this.commands = new ApplicationCommandsNamespace(this);
+        this.users = new UserNamespace(this);
+        this.voice = new VoiceNamespace(this);
     }
   
     handleEvent(data) {
@@ -33,8 +36,6 @@ class Client extends EventEmitter {
         if (event.t === "READY") {
             this.user = event.d.user;
         }
-
-        console.log(event.t);
 
         switch(event.op) {
             case 10: // Hello event
@@ -46,7 +47,7 @@ class Client extends EventEmitter {
                 break;
             case 0: // Dispatch event
                 try {
-                    const eventFunc = require(`./events/${event.t}`);
+                    const eventFunc = require(`./Events/${event.t}`);
                     eventFunc(this, event.d);
                 } catch(e) {
                     this.emit(event.t, event.d);
@@ -131,4 +132,4 @@ class Client extends EventEmitter {
     }
 }
 
-module.exports = { Client, Colors };
+module.exports = { Client, Colors, Events };
