@@ -10,9 +10,13 @@ class VoiceNamespace {
         this.voiceWebSocket = null;
         this.encoder = new OpusEncoder(48000, 2);
         this.udpSocket = dgram.createSocket("udp4");
-        
-        this.client.on("VOICE_STATE_UPDATE", (data) => this.handleVoiceStateUpdate(data));
-        this.client.on("VOICE_SERVER_UPDATE", (data) => this.handleVoiceServerUpdate(data));
+
+        this.client.on("VOICE_STATE_UPDATE", (data) =>
+            this.handleVoiceStateUpdate(data),
+        );
+        this.client.on("VOICE_SERVER_UPDATE", (data) =>
+            this.handleVoiceServerUpdate(data),
+        );
     }
 
     async joinVoiceChannel(guildId, channelId) {
@@ -22,8 +26,8 @@ class VoiceNamespace {
                 guild_id: guildId,
                 channel_id: channelId,
                 self_mute: false,
-                self_deaf: false
-            }
+                self_deaf: false,
+            },
         };
         this.client.ws.send(JSON.stringify(payload));
     }
@@ -47,8 +51,8 @@ class VoiceNamespace {
                     server_id: guildId,
                     user_id: this.client.user.id,
                     session_id: this.sessionId,
-                    token: token
-                }
+                    token: token,
+                },
             };
             this.voiceWebSocket.send(JSON.stringify(payload));
         });
@@ -68,7 +72,7 @@ class VoiceNamespace {
             const packet = Buffer.from(msg);
             const rIP = packet.toString("utf-8", 4, packet.indexOf(0, 4));
             const rPort = packet.readUInt16BE(packet.length - 2);
-            
+
             this.selectProtocol(rIP, rPort);
         });
 
@@ -86,9 +90,9 @@ class VoiceNamespace {
                 data: {
                     address: ip,
                     port: port,
-                    mode: "xsalsa20_poly1305"
-                }
-            }
+                    mode: "xsalsa20_poly1305",
+                },
+            },
         };
         this.voiceWebSocket.send(JSON.stringify(payload));
     }
@@ -100,11 +104,15 @@ class VoiceNamespace {
 
     playAudioFile(filePath) {
         const ffmpeg = spawn("ffmpeg", [
-            "-i", filePath,
-            "-f", "s16le",
-            "-ar", "48000",
-            "-ac", "2",
-            "pipe:1"
+            "-i",
+            filePath,
+            "-f",
+            "s16le",
+            "-ar",
+            "48000",
+            "-ac",
+            "2",
+            "pipe:1",
         ]);
 
         const chunks = [];
@@ -118,7 +126,11 @@ class VoiceNamespace {
                 const segment = audioData.slice(i, i + 1920);
                 const opusEncodedData = this.encoder.encode(segment);
                 const nonce = Buffer.alloc(24);
-                const encryptedPacket = sodium.crypto_secretbox_easy(opusEncodedData, nonce, this.secretKey);
+                const encryptedPacket = sodium.crypto_secretbox_easy(
+                    opusEncodedData,
+                    nonce,
+                    this.secretKey,
+                );
                 this.udpSocket.send(encryptedPacket);
             }
         });
@@ -126,7 +138,7 @@ class VoiceNamespace {
         ffmpeg.stderr.on("data", (data) => {
             console.error(`FFmpeg stderr: ${data}`);
         });
-        
+
         ffmpeg.on("close", (code) => {
             console.log(`FFmpeg child process closed with code ${code}`);
         });

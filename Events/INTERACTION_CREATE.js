@@ -11,4 +11,4 @@ module.exports = (client, packet) => {
             client.emit(events.interactionCreate, interaction);
             break;
     }
-}
+};

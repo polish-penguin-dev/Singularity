@@ -14,7 +14,7 @@ class AnyInteraction {
 
         this.member = data.member;
         this.user = data.user;
-        
+
         this.token = data.token;
 
         this.version = data.version;
@@ -34,23 +34,23 @@ class AnyInteraction {
     async reply(data) {
         if (typeof data === "string") {
             data = {
-                content: data
-            }
+                content: data,
+            };
         }
 
         await axios.post(
             `${this.client.apiBase}/interactions/${this.id}/${this.token}/callback`,
             {
                 type: 4,
-                data
+                data,
             },
 
             {
                 headers: {
-                    "Authorization": `Bot ${this.client.token}`
-                }
-            }
-        )
+                    Authorization: `Bot ${this.client.token}`,
+                },
+            },
+        );
     }
 
     async followUp(data) {
@@ -60,10 +60,10 @@ class AnyInteraction {
 
             {
                 headers: {
-                    "Authorization": `Bot ${this.client.token}`
-                }
-            }
-        )
+                    Authorization: `Bot ${this.client.token}`,
+                },
+            },
+        );
     }
 
     async getOriginalReply() {
@@ -71,9 +71,9 @@ class AnyInteraction {
             `${this.client.apiBase}/webhooks/${this.client.user.id}/${this.token}/messages/@original`,
             {
                 headers: {
-                    "Authorization": `Bot ${this.client.token}`
-                }
-            }
+                    Authorization: `Bot ${this.client.token}`,
+                },
+            },
         );
 
         return data.data;
@@ -86,9 +86,9 @@ class AnyInteraction {
 
             {
                 headers: {
-                    "Authorization": `Bot ${this.client.token}`
-                }
-            }
+                    Authorization: `Bot ${this.client.token}`,
+                },
+            },
         );
     }
 }

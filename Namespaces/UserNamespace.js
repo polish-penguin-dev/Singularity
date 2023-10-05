@@ -10,74 +10,109 @@ class UserNamespace {
 
     async kick(guildId, userId, reason = "") {
         try {
-            await axios.delete(`${this.client.apiBase}/guilds/${guildId}/members/${userId}`, {
-                headers: { 
-                    "Authorization": `Bot ${this.client.token}`,
-                    "Reason": reason
-                }
-            });
+            await axios.delete(
+                `${this.client.apiBase}/guilds/${guildId}/members/${userId}`,
+                {
+                    headers: {
+                        Authorization: `Bot ${this.client.token}`,
+                        Reason: reason,
+                    },
+                },
+            );
         } catch (error) {
-            console.error(`Error kicking user ${userId} from guild ${guildId}:`, error);
+            console.error(
+                `Error kicking user ${userId} from guild ${guildId}:`,
+                error,
+            );
         }
     }
 
     async ban(guildId, userId, reason = "", deleteMessageDays = 0) {
         try {
-            await axios.put(`${this.client.apiBase}/guilds/${guildId}/bans/${userId}`, {
-                reason: reason,
-                delete_message_days: deleteMessageDays
-            }, {
-                headers: { 
-                    "Authorization": `Bot ${this.client.token}`
-                }
-            });
+            await axios.put(
+                `${this.client.apiBase}/guilds/${guildId}/bans/${userId}`,
+                {
+                    reason: reason,
+                    delete_message_days: deleteMessageDays,
+                },
+                {
+                    headers: {
+                        Authorization: `Bot ${this.client.token}`,
+                    },
+                },
+            );
         } catch (error) {
-            console.error(`Error banning user ${userId} from guild ${guildId}:`, error);
+            console.error(
+                `Error banning user ${userId} from guild ${guildId}:`,
+                error,
+            );
         }
     }
 
     async timeout(guildId, userId, duration, reason = "") {
         try {
-            const timeoutEnds = new Date(Date.now() + duration * 60 * 1000).toISOString();
+            const timeoutEnds = new Date(
+                Date.now() + duration * 60 * 1000,
+            ).toISOString();
 
-            await axios.patch(`${this.client.apiBase}/guilds/${guildId}/members/${userId}`, {
-                communication_disabled_until: timeoutEnds,
-                reason: reason
-            }, {
-                headers: { 
-                    "Authorization": `Bot ${this.client.token}`
-                }
-            });
+            await axios.patch(
+                `${this.client.apiBase}/guilds/${guildId}/members/${userId}`,
+                {
+                    communication_disabled_until: timeoutEnds,
+                    reason: reason,
+                },
+                {
+                    headers: {
+                        Authorization: `Bot ${this.client.token}`,
+                    },
+                },
+            );
         } catch (error) {
-            console.error(`Error timing out user ${userId} in guild ${guildId}:`, error);
+            console.error(
+                `Error timing out user ${userId} in guild ${guildId}:`,
+                error,
+            );
         }
     }
 
-     async untimeout(guildId, userId, reason = "") {
+    async untimeout(guildId, userId, reason = "") {
         try {
-            await axios.patch(`${this.client.apiBase}/guilds/${guildId}/members/${userId}`, {
-                communication_disabled_until: null,
-                reason: reason
-            }, {
-                headers: { 
-                    "Authorization": `Bot ${this.client.token}`
-                }
-            });
+            await axios.patch(
+                `${this.client.apiBase}/guilds/${guildId}/members/${userId}`,
+                {
+                    communication_disabled_until: null,
+                    reason: reason,
+                },
+                {
+                    headers: {
+                        Authorization: `Bot ${this.client.token}`,
+                    },
+                },
+            );
         } catch (error) {
-            console.error(`Error lifting timeout for user ${userId} in guild ${guildId}:`, error);
+            console.error(
+                `Error lifting timeout for user ${userId} in guild ${guildId}:`,
+                error,
+            );
         }
     }
 
     async unban(guildId, userId, reason = "") {
         try {
-            await axios.delete(`${this.client.apiBase}/guilds/${guildId}/bans/${userId}`, {
-                headers: { 
-                    "Authorization": `Bot ${this.client.token}`,
-                    "Reason": reason
-                }
-            });
+            await axios.delete(
+                `${this.client.apiBase}/guilds/${guildId}/bans/${userId}`,
+                {
+                    headers: {
+                        Authorization: `Bot ${this.client.token}`,
+                        Reason: reason,
+                    },
+                },
+            );
         } catch (error) {
-            console.error(`Error unbanning user ${userId} from guild ${guildId}:`, error);
+            console.error(
+                `Error unbanning user ${userId} from guild ${guildId}:`,
+                error,
+            );
         }
     }
 
@@ -85,7 +120,7 @@ class UserNamespace {
     async hasPermission(guildId, userId, permission) {
         try {
             const member = await this.fetch.member(guildId, userId);
-          
+
             for (let roleId of member.roles) {
                 const role = await this.fetch.role(guildId, roleId);
                 if (role.permissions.includes(permission)) {
@@ -94,7 +129,10 @@ class UserNamespace {
             }
             return false;
         } catch (error) {
-            console.error(`Error checking permission for user ${userId} in guild ${guildId}:`, error);
+            console.error(
+                `Error checking permission for user ${userId} in guild ${guildId}:`,
+                error,
+            );
             return false;
         }
     }

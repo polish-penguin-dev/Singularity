@@ -1,5 +1,6 @@
 const Events = {
-    applicationCommandPermissionsUpdate: "APPLICATION_COMMAND_PERMISSIONS_UPDATE",
+    applicationCommandPermissionsUpdate:
+        "APPLICATION_COMMAND_PERMISSIONS_UPDATE",
     autoModerationRuleCreate: "AUTO_MODERATION_RULE_CREATE",
     autoModerationRuleUpdate: "AUTO_MODERATION_RULE_UPDATE",
     autoModerationRuleDelete: "AUTO_MODERATION_RULE_DELETE",
@@ -57,7 +58,7 @@ const Events = {
     userUpdate: "USER_UPDATE",
     voiceStateUpdate: "VOICE_STATE_UPDATE",
     voiceServerUpdate: "VOICE_SERVER_UPDATE",
-    webhooksUpdate: "WEBHOOKS_UPDATE"
-}
+    webhooksUpdate: "WEBHOOKS_UPDATE",
+};
 
 module.exports = Events;

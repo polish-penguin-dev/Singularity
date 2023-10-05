@@ -29,7 +29,7 @@ class Client extends EventEmitter {
         this.users = new UserNamespace(this);
         this.voice = new VoiceNamespace(this);
     }
-  
+
     handleEvent(data) {
         const event = JSON.parse(data);
 
@@ -37,7 +37,7 @@ class Client extends EventEmitter {
             this.user = event.d.user;
         }
 
-        switch(event.op) {
+        switch (event.op) {
             case 10: // Hello event
                 this.startHeartbeat(event.d.heartbeat_interval);
                 this.identify();
@@ -49,10 +49,11 @@ class Client extends EventEmitter {
                 try {
                     const eventFunc = require(`./Events/${event.t}`);
                     eventFunc(this, event.d);
-                } catch(e) {
+                } catch (e) {
+                    console.log("yay");
                     this.emit(event.t, event.d);
                 }
-                
+
                 break;
             default:
                 // Emit raw event data if needed
@@ -65,47 +66,54 @@ class Client extends EventEmitter {
         if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
 
         this.heartbeatInterval = setInterval(() => {
-            this.ws.send(JSON.stringify({
-                op: 1, // Heartbeat opcode
-                d: null
-            }));
+            this.ws.send(
+                JSON.stringify({
+                    op: 1, // Heartbeat opcode
+                    d: null,
+                }),
+            );
         }, interval);
     }
 
     identify() {
-        this.ws.send(JSON.stringify({
-            op: 2, // Identify opcode
-            d: {
-                token: this.token,
-                intents: this.intents,
-                properties: {
-                    "$os": "linux",
-                    "$browser": "my_discord_bot",
-                    "$device": "my_discord_bot"
+        this.ws.send(
+            JSON.stringify({
+                op: 2, // Identify opcode
+                d: {
+                    token: this.token,
+                    intents: this.intents,
+                    properties: {
+                        $os: "linux",
+                        $browser: "my_discord_bot",
+                        $device: "my_discord_bot",
+                    },
+                    presence: {
+                        status: "online",
+                        afk: false,
+                    },
                 },
-                presence: {
-                  status: "online",
-                  afk: false
-                }
-            }
-        }));
+            }),
+        );
     }
 
     async connect() {
         const gatewayUrl = await this.getGatewayUrl();
         this.ws = new WebSocket(gatewayUrl);
-        
+
         this.ws.on("open", (data) => {
             console.log("Connected to gateway.");
         });
-        
+
         this.ws.on("message", this.handleEvent.bind(this));
     }
 
     async getGatewayUrl() {
-        const response = await axios.get("https://discord.com/api/v10/gateway/bot", {
-            headers: { "Authorization": `Bot ${this.token}` }
-        });
+        const response = await axios.get(
+            "https://discord.com/api/v10/gateway/bot",
+            {
+                headers: { Authorization: `Bot ${this.token}` },
+            },
+        );
         return response.data.url;
     }
 
@@ -113,7 +121,7 @@ class Client extends EventEmitter {
         if (!this.token) {
             throw new Error("Token not provided");
         }
-      
+
         this.connect();
     }
 
@@ -122,13 +130,15 @@ class Client extends EventEmitter {
             throw new Error("Invalid status provided.");
         }
 
-        this.ws.send(JSON.stringify({
-            op: 3,
-            d: {
-              status: newStatus,
-              afk: false
-            }
-        }));
+        this.ws.send(
+            JSON.stringify({
+                op: 3,
+                d: {
+                    status: newStatus,
+                    afk: false,
+                },
+            }),
+        );
     }
 }
 
