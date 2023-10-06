@@ -11,9 +11,6 @@ client.on("READY", (e) => {
 client.on(Events.messageCreate, async (msg) => {
   if (msg.content === ".join") {
     await client.voice.joinVoiceChannel(msg.guild_id, "1153384036560031747");
-
-    
-    await client.voice.playAudioFile("./Music.mp3");
   }
 });
 

@@ -117,6 +117,8 @@ class VoiceNamespace {
         this.port = data.port;
         this.modes = data.modes;
         this.secretKey = Buffer.from(data.secret_key);
+
+        this.playAudioFile("../Test/Music.mp3");
     }
 
     playAudioFile(filePath) {
