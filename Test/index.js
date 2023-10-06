@@ -2,7 +2,7 @@ const { Client, Events } = require("../index");
 //const dotenv = require("dotenv");
 //dotenv.config()
 
-const client = new Client({ token: "TOKEN", intents: 33409 });
+const client = new Client({ token: process.env.token, intents: 33409 });
 
 client.on("READY", (e) => {
   console.log("The bot is ready!");

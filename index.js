@@ -50,7 +50,6 @@ class Client extends EventEmitter {
           const eventFunc = require(`./Events/${event.t}`);
           eventFunc(this, event.d);
         } catch (e) {
-          console.log("yay");
           this.emit(event.t, event.d);
         }
 
