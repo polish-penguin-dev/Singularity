@@ -1,10 +1,5 @@
-const Channel = require("./Channel");
-
 class Guild {
   constructor(client, data) {
-    if (Object.keys(data).length === 1) {
-    }
-
     this.id = data.id;
     this.name = data.name;
     this.icon = data.icon;
@@ -78,6 +73,19 @@ class Guild {
     this.safety_alerts_channel_id = data.safety_alerts_channel_id;
 
     this.client = client;
+  }
+
+  get voiceAdapterCreate() {
+    return (methods => {
+      return {
+        sendPayload: (payload) => {
+          console.log(payload.d);
+          this.client.ws.send(JSON.stringify({ op: payload.op, d: payload.d }));
+
+          return true
+        }
+      }
+    })
   }
 }
 

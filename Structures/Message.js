@@ -57,6 +57,8 @@ class Message {
 
     this.resolved = data?.resolved;
 
+    this.guild_id = data?.guild_id;
+
     this.client = client;
   }
 

@@ -13,7 +13,8 @@ client.on("READY", (e) => {
 
 client.on(Events.messageCreate, async (msg) => {
   if (msg.content === ".join") {
-    const voice = await client.voice.join(msg.guild_id, "1153384036560031747");
+    const guild = await client.guilds.getGuild(msg.guild_id);
+    const voice = await client.voice.join(guild, "1151167186350653533");
 
     const player = await client.voice.player();
     const music = await client.voice.resource("./Music.mp3");

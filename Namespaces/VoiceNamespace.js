@@ -1,9 +1,7 @@
 const {
   joinVoiceChannel,
   createAudioPlayer,
-  createAudioResource,
-  DiscordGatewayAdapterCreator
-} = require("@discordjs/voice");
+  createAudioResource} = require("@discordjs/voice");
 
 
 class VoiceNamespace {
@@ -11,11 +9,13 @@ class VoiceNamespace {
     this.client = client;
   }
 
-  join(guildId, channelId) {
+  join(guild, channelId) {
+    console.log(guild.id);
     return joinVoiceChannel({
-      guildId: guildId,
+      guildId: guild.id,
       channelId: channelId,
-      adapterCreator: DiscordGatewayAdapterCreator
+
+      adapterCreator: guild.voiceAdapterCreate
     });
   }
 
