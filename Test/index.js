@@ -1,8 +1,15 @@
-const { Client, Events } = require("../index");
+const { Client, Events, Intents } = require("../index");
 //const dotenv = require("dotenv");
 //dotenv.config()
 
-const client = new Client({ token: process.env.token, intents: 33409 });
+const client = new Client({ 
+  token: process.env.token, 
+  intents: [
+    Intents.GUILD_VOICE_STATES,
+    Intents.GUILDS,
+    Intents.GUILD_MESSAGES
+  ]
+});
 
 client.on("READY", (e) => {
   console.log("The bot is ready!");

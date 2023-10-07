@@ -12,6 +12,7 @@ const VoiceNamespace = require("./Namespaces/VoiceNamespace");
 // Import Lists
 const Colors = require("./Lists/Colors");
 const Events = require("./Lists/Events");
+const Intents = require('./Lists/Intents');
 
 class Client extends EventEmitter {
   constructor(options) {
@@ -75,12 +76,16 @@ class Client extends EventEmitter {
   }
 
   identify() {
+    const intents = this.intents.reduce((a, b) => {
+      return a + b;
+    });
+
     this.ws.send(
       JSON.stringify({
         op: 2, // Identify opcode
         d: {
           token: this.token,
-          intents: this.intents,
+          intents,
           properties: {
             $os: "linux",
             $browser: "my_discord_bot",
@@ -141,4 +146,4 @@ class Client extends EventEmitter {
   }
 }
 
-module.exports = { Client, Colors, Events };
+module.exports = { Client, Colors, Events, Intents };

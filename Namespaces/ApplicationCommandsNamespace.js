@@ -56,7 +56,7 @@ class ApplicationCommands {
     );
   }
 
-  async createGuildCommand(options) {
+  async createGuildCommand(guildId, options) {
     await axios.post(
       `${this.client.apiBase}/applications/${this.client.user.id}/guilds/${guildId}/commands`,
       options,
