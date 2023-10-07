@@ -76,16 +76,16 @@ class Guild {
   }
 
   get voiceAdapterCreate() {
-    return (methods => {
+    return (methods) => {
       return {
         sendPayload: (payload) => {
           console.log(payload.d);
           this.client.ws.send(JSON.stringify({ op: payload.op, d: payload.d }));
 
-          return true
-        }
-      }
-    })
+          return true;
+        },
+      };
+    };
   }
 }
 

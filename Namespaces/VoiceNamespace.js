@@ -1,8 +1,8 @@
 const {
   joinVoiceChannel,
   createAudioPlayer,
-  createAudioResource} = require("@discordjs/voice");
-
+  createAudioResource,
+} = require("@discordjs/voice");
 
 class VoiceNamespace {
   constructor(client) {
@@ -15,7 +15,7 @@ class VoiceNamespace {
       guildId: guild.id,
       channelId: channelId,
 
-      adapterCreator: guild.voiceAdapterCreate
+      adapterCreator: guild.voiceAdapterCreate,
     });
   }
 
@@ -25,7 +25,7 @@ class VoiceNamespace {
 
   resource(file) {
     return createAudioResource(file);
-  } 
+  }
 }
 
 module.exports = VoiceNamespace;

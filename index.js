@@ -8,7 +8,7 @@ const FetchNamespace = require("./Namespaces/FetchNamespace");
 const UserNamespace = require("./Namespaces/UserNamespace");
 const VoiceNamespace = require("./Namespaces/VoiceNamespace");
 const ChannelNamespace = require("./Namespaces/ChannelNamespace");
-const GuildNamespace = require('./Namespaces/GuildNamespace')
+const GuildNamespace = require("./Namespaces/GuildNamespace");
 
 // Import Lists
 const Colors = require("./Lists/Colors");
@@ -31,7 +31,7 @@ class Client extends EventEmitter {
     this.users = new UserNamespace(this);
     this.voice = new VoiceNamespace(this);
     this.channels = new ChannelNamespace(this);
-    this.guilds = new GuildNamespace(this)
+    this.guilds = new GuildNamespace(this);
   }
 
   handleEvent(data) {
