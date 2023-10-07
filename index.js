@@ -12,7 +12,7 @@ const VoiceNamespace = require("./Namespaces/VoiceNamespace");
 // Import Lists
 const Colors = require("./Lists/Colors");
 const Events = require("./Lists/Events");
-const Intents = require('./Lists/Intents');
+const Intents = require("./Lists/Intents");
 
 class Client extends EventEmitter {
   constructor(options) {

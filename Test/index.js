@@ -2,13 +2,9 @@ const { Client, Events, Intents } = require("../index");
 //const dotenv = require("dotenv");
 //dotenv.config()
 
-const client = new Client({ 
-  token: process.env.token, 
-  intents: [
-    Intents.GUILD_VOICE_STATES,
-    Intents.GUILDS,
-    Intents.GUILD_MESSAGES
-  ]
+const client = new Client({
+  token: process.env.token,
+  intents: [Intents.GUILD_VOICE_STATES, Intents.GUILDS, Intents.GUILD_MESSAGES],
 });
 
 client.on("READY", (e) => {
@@ -22,4 +18,3 @@ client.on(Events.messageCreate, async (msg) => {
 });
 
 client.login();
-
