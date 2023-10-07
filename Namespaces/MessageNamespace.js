@@ -1,11 +1,12 @@
 const axios = require("axios");
 
 class MessageNamespace {
-  constructor(client) {
+  constructor(client, channelId) {
     this.client = client;
+    this.channelId = channelId;
   }
 
-  async send(channelId, content) {
+  async send(content) {
     try {
       let payload;
 
@@ -16,7 +17,7 @@ class MessageNamespace {
       }
 
       await axios.post(
-        `${this.client.apiBase}/channels/${channelId}/messages`,
+        `${this.client.apiBase}/channels/${this.channelId}/messages`,
         payload,
         {
           headers: { Authorization: `Bot ${this.client.token}` },
@@ -70,12 +71,12 @@ class MessageNamespace {
   }
 
   //Cannot delete messages older than 14 days!
-  async purge(channelId, messages) {
+  async purge(messages) {
     try {
       const messageIds = messages.map((msg) => msg.id);
 
       await axios.post(
-        `${this.client.apiBase}/channels/${channelId}/messages/bulk-delete`,
+        `${this.client.apiBase}/channels/${this.channelId}/messages/bulk-delete`,
         {
           messages: messageIds,
         },
@@ -85,7 +86,7 @@ class MessageNamespace {
       );
     } catch (error) {
       console.log(
-        `Error purging (BulkDelete) messages in channel ${channelId}:`,
+        `Error purging (BulkDelete) messages in channel ${this.channelId}:`,
         error,
       );
     }

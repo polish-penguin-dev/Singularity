@@ -4,10 +4,10 @@ const axios = require("axios");
 
 // Import NameSpaces
 const ApplicationCommandsNamespace = require("./Namespaces/ApplicationCommandsNamespace");
-const MessageNamespace = require("./Namespaces/MessageNamespace");
 const FetchNamespace = require("./Namespaces/FetchNamespace");
 const UserNamespace = require("./Namespaces/UserNamespace");
 const VoiceNamespace = require("./Namespaces/VoiceNamespace");
+const ChannelNamespace = require("./Namespaces/ChannelNamespace");
 
 // Import Lists
 const Colors = require("./Lists/Colors");
@@ -25,10 +25,11 @@ class Client extends EventEmitter {
 
     // Initialize namespaces
     this.fetch = new FetchNamespace(this);
-    this.messages = new MessageNamespace(this);
+    //this.messages = new MessageNamespace(this);
     this.commands = new ApplicationCommandsNamespace(this);
     this.users = new UserNamespace(this);
     this.voice = new VoiceNamespace(this);
+    this.channels = new ChannelNamespace(this);
   }
 
   handleEvent(data) {
@@ -48,6 +49,7 @@ class Client extends EventEmitter {
         break;
       case 0: // Dispatch event
         try {
+          console.log(event.t);
           const eventFunc = require(`./Events/${event.t}`);
           eventFunc(this, event.d);
         } catch (e) {
